@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { register as registerUser } from '../api/auth.ts'
+import { useAuth } from '@hooks/useAuth.ts'
+import { register as registerApi } from '../api/auth.ts'
 import { Link } from 'react-router-dom'
-import { Button } from '../components/ui/Button.tsx'
-import { Input } from '../components/ui/Input.tsx'
+import { Button } from '@components/ui/Button.tsx'
+import { Input } from '@components/ui/Input.tsx'
 
 export function RegisterPage() {
+	const { login } = useAuth()
+
 	const [form, setForm] = useState({
 		name: '',
 		email: '',
@@ -15,11 +18,12 @@ export function RegisterPage() {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
-		setLoading(true)
 		setError('')
+		setLoading(true)
 
 		try {
-			const res = await registerUser(form.name, form.email, form.password)
+			const res = await registerApi(form.name, form.email, form.password)
+			login(res.data.user, res.data.token)
 		} catch (err: any) {
 			setError(err.response?.data?.message || 'Something went wrong')
 		} finally {

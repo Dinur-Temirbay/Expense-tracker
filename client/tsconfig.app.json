@@ -25,14 +25,13 @@
 		"ignoreDeprecations": "6.0",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"],
+			"@api/*": ["src/api/*"],
 			"@components/*": ["src/components/*"],
-			"@ui/*": ["src/components/ui/*"],
-			"@layout/*": ["src/components/layout/*"],
-			"@sections/*": ["src/sections/*"],
+			"@context/*": ["src/context/*"],
+			"@hooks/*": ["src/hooks/*"],
 			"@pages/*": ["src/pages/*"],
-			"@data/*": ["src/data/*"],
-			"@context/*": ["src/context/*"]
+			"@sections/*": ["src/sections/*"],
+			"@types/*": ["src/types/*"]
 		}
 	},
 	"include": ["src"]
