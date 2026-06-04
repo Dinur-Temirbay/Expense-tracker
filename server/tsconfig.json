@@ -10,8 +10,12 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"noUncheckedIndexedAccess": true,
+		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@models/*": ["src/models/*"],
+			"@controllers/*": ["src/controllers/*"],
+			"@routes/*": ["src/routes/*"],
+			"@middleware/*": ["src/middleware/*"]
 		}
 	},
 	"include": ["src/**/*"]

@@ -1,8 +1,12 @@
+import { useAuth } from '@hooks/useAuth.ts'
+
 // import { AddTransaction } from '@sections/AddTransaction/AddTransaction.tsx'
 // import { TransactionList } from '@sections/TransactionList/TransactionList.tsx'
 // import { Dashboard } from '@sections/Dashboard/Dashboard'
 
 export function DashboardPage() {
+	const { user, logout } = useAuth()
+
 	return (
 		<div className='min-h-screen bg-gray-900 text-white'>
 			<div className='border-b border-gray-800 px-6 py-4 flex justify-between items-center'>
@@ -10,7 +14,7 @@ export function DashboardPage() {
 				<div className='flex items-center gap-4'>
 					{/* <span className='text-gray-400 text-sm'>Hi, {user?.name}</span> */}
 					<button
-						// onClick={logout}
+						onClick={logout}
 						className='text-sm text-gray-400 hover:text-white transition-colors'
 					>
 						Logout
