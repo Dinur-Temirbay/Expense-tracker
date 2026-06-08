@@ -31,7 +31,8 @@
 			"@hooks/*": ["src/hooks/*"],
 			"@pages/*": ["src/pages/*"],
 			"@sections/*": ["src/sections/*"],
-			"@types/*": ["src/types/*"]
+			"@types/*": ["src/types/*"],
+			"@utils/*": ["src/utils/*"]
 		}
 	},
 	"include": ["src"]

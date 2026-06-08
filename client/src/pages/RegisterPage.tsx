@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import { Button } from '@components/ui/Button.tsx'
 import { Input } from '@components/ui/Input.tsx'
 
+const passwordRegex =
+	/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+
 export function RegisterPage() {
 	const { login } = useAuth()
 
@@ -13,19 +16,53 @@ export function RegisterPage() {
 		email: '',
 		password: '',
 	})
+
+	const [errors, setErrors] = useState({
+		name: '',
+		email: '',
+		password: '',
+	})
+
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
+	const [serverError, setServerError] = useState('')
+
+	const validate = () => {
+		const newErrors = { name: '', email: '', password: '' }
+
+		if (!form.name.trim()) {
+			newErrors.name = 'Name is required'
+		}
+
+		if (!form.email.trim()) {
+			newErrors.email = 'Email is required'
+		} else if (!form.email.includes('@')) {
+			newErrors.email = 'Enter a valid email'
+		}
+
+		if (!form.password) {
+			newErrors.password = 'Password is required'
+		} else if (!passwordRegex.test(form.password)) {
+			newErrors.password =
+				'Min 8 characters, uppercase, lowercase, number or special character'
+		}
+
+		setErrors(newErrors)
+
+		return !newErrors.name && !newErrors.email && !newErrors.password
+	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
-		setError('')
-		setLoading(true)
+		setServerError('')
 
+		if (!validate()) return
+
+		setLoading(true)
 		try {
 			const res = await registerApi(form.name, form.email, form.password)
 			login(res.data.user, res.data.token)
 		} catch (err: any) {
-			setError(err.response?.data?.message || 'Something went wrong')
+			setServerError(err.response?.data?.message || 'Something went wrong')
 		} finally {
 			setLoading(false)
 		}
@@ -36,7 +73,9 @@ export function RegisterPage() {
 			<div className='bg-gray-800 rounded-xl p-8 w-full max-w-md'>
 				<h1 className='text-white text-2xl font-bold mb-6'>Create Account</h1>
 
-				{error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
+				{serverError && (
+					<p className='text-red-500 text-sm mb-4'>{serverError}</p>
+				)}
 
 				<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 					<Input
@@ -46,6 +85,7 @@ export function RegisterPage() {
 						placeholder='John Doe'
 						value={form.name}
 						onChange={e => setForm({ ...form, name: e.target.value })}
+						error={errors.name}
 					/>
 					<Input
 						id='email'
@@ -54,6 +94,7 @@ export function RegisterPage() {
 						placeholder='you@example.com'
 						value={form.email}
 						onChange={e => setForm({ ...form, email: e.target.value })}
+						error={errors.email}
 					/>
 					<Input
 						id='password'
@@ -62,7 +103,15 @@ export function RegisterPage() {
 						placeholder='••••••••'
 						value={form.password}
 						onChange={e => setForm({ ...form, password: e.target.value })}
+						error={errors.password}
 					/>
+
+					{!errors.password && (
+						<p className='text-gray-500 text-xs -mt-2'>
+							Min 8 characters, uppercase, lowercase, number or special
+							character
+						</p>
+					)}
 
 					<Button
 						type='submit'
@@ -84,7 +133,3 @@ export function RegisterPage() {
 		</div>
 	)
 }
-
-// #00b4d8
-// #0077b6
-// #03045e

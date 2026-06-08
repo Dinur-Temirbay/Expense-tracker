@@ -2,8 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import authRouter from '@routes/auth'
-import transactionsRouter from '@routes/transactions'
+import authRouter from './routes/auth'
+import transactionsRouter from './routes/transactions'
 
 dotenv.config()
 

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { User } from '@models/User'
-import { AuthRequest } from '@middleware/auth'
+import { User } from '../models/User'
+import { AuthRequest } from '../middleware/auth'
 
 export const register = async (req: Request, res: Response) => {
 	const { name, email, password } = req.body
