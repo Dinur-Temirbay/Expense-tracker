@@ -51,7 +51,7 @@ export function RegisterPage() {
 		return !newErrors.name && !newErrors.email && !newErrors.password
 	}
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setServerError('')
 
