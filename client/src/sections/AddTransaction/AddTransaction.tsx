@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { TransactionForm, Category } from '@types/index'
+import type { TransactionForm, Category } from '../../types'
 import { Button } from '@components/ui/Button'
 import { Input } from '@components/ui/Input'
 

@@ -1,30 +1,46 @@
 import { useState, useEffect } from 'react'
-import type { Transaction, TransactionForm } from '@types/index'
+import type { Transaction, TransactionForm } from '../types'
 import * as transactionsApi from '@api/transactions'
+import { useAuth } from '@hooks/useAuth'
 
 export function useTransactions() {
+	const { user } = useAuth()
 	const [transactions, setTransactions] = useState<Transaction[]>([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
+		if (!user) {
+			return
+		}
+
+		let isOutdated = false
+
 		const load = async () => {
-			setTransactions([])
 			setLoading(true)
 			setError('')
 
 			try {
 				const response = await transactionsApi.getTransactions()
-				setTransactions(response.data)
+				if (!isOutdated) setTransactions(response.data)
 			} catch (err: any) {
-				setError(err.response?.data?.message || 'Failed to load transactions')
+				if (!isOutdated)
+					setError(err.response?.data?.message || 'Failed to load transactions')
 			} finally {
-				setLoading(false)
+				if (!isOutdated) setLoading(false)
 			}
 		}
 
 		load()
-	}, [])
+
+		return () => {
+			isOutdated = true
+		}
+	}, [user?.id])
+
+	const visibleTransactions = user ? transactions : []
+	const visibleLoading = user ? loading : false
+	const visibleError = user ? error : ''
 
 	const addTransaction = async (form: TransactionForm) => {
 		try {
@@ -44,5 +60,11 @@ export function useTransactions() {
 		}
 	}
 
-	return { transactions, loading, error, addTransaction, deleteTransaction }
+	return {
+		transactions: visibleTransactions,
+		loading: visibleLoading,
+		error: visibleError,
+		addTransaction,
+		deleteTransaction,
+	}
 }

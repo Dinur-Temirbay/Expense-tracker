@@ -1,4 +1,4 @@
-import type { Transaction } from '@types/index'
+import type { Transaction } from '../../types'
 import { Button } from '@components/ui/Button'
 
 interface Props {

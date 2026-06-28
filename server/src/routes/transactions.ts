@@ -4,7 +4,7 @@ import {
 	deleteTransaction,
 	getTransactions,
 } from '../controllers/transactions'
-import { authMiddleware } from '@middleware/auth'
+import { authMiddleware } from '../middleware/auth'
 
 const router = Router()
 

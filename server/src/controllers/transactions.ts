@@ -1,9 +1,11 @@
 import { Request, Response } from 'express'
-import { Transaction } from '@models/Transaction'
-import { AuthRequest } from '@middleware/auth'
+import { Transaction } from '../models/Transaction'
+import { AuthRequest } from '../middleware/auth'
 
-export const getTransactions = async (req: Request, res: Response) => {
-	const transactions = await Transaction.find().sort({ createdAt: -1 })
+export const getTransactions = async (req: AuthRequest, res: Response) => {
+	const transactions = await Transaction.find({ userId: req.userId }).sort({
+		createdAt: -1,
+	})
 	res.json(transactions)
 }
 

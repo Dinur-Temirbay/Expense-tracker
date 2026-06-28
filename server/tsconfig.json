@@ -9,14 +9,7 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"noUncheckedIndexedAccess": true,
-		"baseUrl": ".",
-		"paths": {
-			"@models/*": ["src/models/*"],
-			"@controllers/*": ["src/controllers/*"],
-			"@routes/*": ["src/routes/*"],
-			"@middleware/*": ["src/middleware/*"]
-		}
+		"noUncheckedIndexedAccess": true
 	},
 	"include": ["src/**/*"]
 }
