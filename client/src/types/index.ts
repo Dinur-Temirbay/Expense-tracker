@@ -1,10 +1,4 @@
-export type Category =
-	| 'Food'
-	| 'Transport'
-	| 'Entertainment'
-	| 'Shopping'
-	| 'Health'
-	| 'Other'
+export type Category = string
 
 export interface Transaction {
 	_id: string

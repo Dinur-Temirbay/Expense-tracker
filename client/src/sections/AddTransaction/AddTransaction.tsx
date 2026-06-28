@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import type { TransactionForm, Category } from '../../types'
+import type { Category } from '../../types'
 import { Button } from '@components/ui/Button'
 import { Input } from '@components/ui/Input'
 
-const categories: Category[] = [
+const DEFAULT_CATEGORIES: Category[] = [
 	'Food',
 	'Transport',
 	'Entertainment',
@@ -12,25 +12,34 @@ const categories: Category[] = [
 	'Other',
 ]
 
-interface Props {
-	onAdd: (form: TransactionForm) => void
-}
-
 export function AddTransaction({ onAdd }: Props) {
 	const [title, setTitle] = useState('')
 	const [amount, setAmount] = useState('')
-	const [category, setCategory] = useState<Category>('Food')
+	const [category, setCategory] = useState('Food')
+	const [customCategory, setCustomCategory] = useState('')
+	const [isCustom, setIsCustom] = useState(false)
 	const [type, setType] = useState<'income' | 'expense'>('expense')
 	const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
-	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		if (!title || !amount) return
 
-		onAdd({ title, amount: Number(amount), category, type, date })
+		const finalCategory = isCustom ? customCategory : category
+
+		if (!title || !amount || !finalCategory) return
+
+		onAdd({
+			title,
+			amount: Number(amount),
+			category: finalCategory,
+			type,
+			date,
+		})
 
 		setTitle('')
 		setAmount('')
+		setCustomCategory('')
+		setIsCustom(false)
 	}
 
 	return (
@@ -59,17 +68,44 @@ export function AddTransaction({ onAdd }: Props) {
 
 			<div className='flex flex-col gap-1.5'>
 				<label className='text-sm text-gray-400'>Category</label>
-				<select
-					value={category}
-					onChange={e => setCategory(e.target.value as Category)}
-					className='bg-gray-700 text-white px-4 py-2.5 rounded-lg outline-none border border-transparent focus:border-cyan-600 transition-colors'
-				>
-					{categories.map(cat => (
-						<option key={cat} value={cat}>
-							{cat}
-						</option>
-					))}
-				</select>
+
+				<div className='flex gap-2 mb-1'>
+					<button
+						type='button'
+						onClick={() => setIsCustom(false)}
+						className={`text-xs px-3 py-1 rounded-full transition-colors ${!isCustom ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-400'}`}
+					>
+						Default
+					</button>
+					<button
+						type='button'
+						onClick={() => setIsCustom(true)}
+						className={`text-xs px-3 py-1 rounded-full transition-colors ${isCustom ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-400'}`}
+					>
+						Custom
+					</button>
+				</div>
+
+				{isCustom ? (
+					<Input
+						id='customCategory'
+						placeholder='e.g. Subscriptions'
+						value={customCategory}
+						onChange={e => setCustomCategory(e.target.value)}
+					/>
+				) : (
+					<select
+						value={category}
+						onChange={e => setCategory(e.target.value)}
+						className='bg-gray-700 text-white px-4 py-2.5 rounded-lg outline-none border border-transparent focus:border-cyan-600 transition-colors'
+					>
+						{DEFAULT_CATEGORIES.map(cat => (
+							<option key={cat} value={cat}>
+								{cat}
+							</option>
+						))}
+					</select>
+				)}
 			</div>
 
 			<div className='flex flex-col gap-1.5'>

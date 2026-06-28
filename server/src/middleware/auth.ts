@@ -11,7 +11,6 @@ export const authMiddleware = (
 	next: NextFunction,
 ) => {
 	const token = req.headers.authorization?.split(' ')[1]
-	console.log('token received:', token) // ← добавь
 
 	if (!token) {
 		res.status(401).json({ message: 'No token' })
@@ -23,7 +22,6 @@ export const authMiddleware = (
 			userId: string
 		}
 		req.userId = decoded.userId
-		console.log('userId set:', req.userId) // ← добавь
 		next()
 	} catch {
 		res.status(401).json({ message: 'Invalid token' })
