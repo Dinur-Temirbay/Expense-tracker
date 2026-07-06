@@ -34,9 +34,7 @@ export function LoginPage() {
 		<div className='min-h-screen bg-gray-900 flex items-center justify-center px-4'>
 			<div className='bg-gray-800 rounded-xl p-8 w-full max-w-md'>
 				<h1 className='text-white text-2xl font-bold mb-6'>Sign In</h1>
-
 				{error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
-
 				<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 					<Input
 						id='email'
@@ -64,13 +62,22 @@ export function LoginPage() {
 						Sign In
 					</Button>
 				</form>
-
-				<p className='text-gray-400 text-sm mt-4 text-center'>
-					No account?{' '}
-					<Link to='/register' className='text-cyan-500 hover:underline'>
-						Register
-					</Link>
-				</p>
+				<div className='flex justify-between items-center mt-4'>
+					<p className='text-gray-400 text-sm mt-4 text-center'>
+						No account?{' '}
+						<Link to='/register' className='text-cyan-500 hover:underline'>
+							Register
+						</Link>
+					</p>
+					<p className='text-gray-400 text-sm mt-2 text-center'>
+						<Link
+							to='/reset-password'
+							className='text-cyan-500 hover:underline'
+						>
+							Forgot password?
+						</Link>
+					</p>
+				</div>
 			</div>
 		</div>
 	)

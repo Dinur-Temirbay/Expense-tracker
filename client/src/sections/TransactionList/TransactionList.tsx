@@ -12,7 +12,12 @@ const categoryColors: Record<string, string> = {
 	Entertainment: 'bg-purple-500/10 text-purple-400',
 	Shopping: 'bg-pink-500/10 text-pink-400',
 	Health: 'bg-green-500/10 text-green-400',
-	Other: 'bg-gray-500/10 text-gray-400',
+}
+
+const CUSTOM_CATEGORY_STYLE = 'bg-cyan-500/10 text-cyan-400'
+
+function getCategoryStyle(category: string) {
+	return categoryColors[category] || CUSTOM_CATEGORY_STYLE
 }
 
 export function TransactionList({ transactions, onDelete }: Props) {
@@ -26,7 +31,7 @@ export function TransactionList({ transactions, onDelete }: Props) {
 
 	return (
 		<div className='flex flex-col gap-3'>
-			<h2 className='text-white text-xl font-bold'>Transactions</h2>
+			<h2 className='text-white text-xl font-bold'>Last transactions</h2>
 
 			{transactions.map(t => (
 				<div
@@ -37,7 +42,7 @@ export function TransactionList({ transactions, onDelete }: Props) {
 						<p className='text-white font-semibold'>{t.title}</p>
 						<div className='flex items-center gap-2'>
 							<span
-								className={`text-xs px-2 py-0.5 rounded-full ${categoryColors[t.category]}`}
+								className={`text-xs px-2 py-0.5 rounded-full ${getCategoryStyle(t.category)}`}
 							>
 								{t.category}
 							</span>

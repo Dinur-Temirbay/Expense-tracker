@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Category } from '../../types'
+import type { TransactionForm, Category } from '../../types'
 import { Button } from '@components/ui/Button'
 import { Input } from '@components/ui/Input'
 
@@ -9,8 +9,11 @@ const DEFAULT_CATEGORIES: Category[] = [
 	'Entertainment',
 	'Shopping',
 	'Health',
-	'Other',
 ]
+
+interface Props {
+	onAdd: (form: TransactionForm) => void
+}
 
 export function AddTransaction({ onAdd }: Props) {
 	const [title, setTitle] = useState('')

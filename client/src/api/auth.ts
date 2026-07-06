@@ -11,3 +11,7 @@ export const register = (name: string, email: string, password: string) => {
 export const login = (email: string, password: string) => {
 	return API.post('/auth/login', { email, password })
 }
+
+export const resetPassword = (email: string, newPassword: string) => {
+	return API.post('/auth/reset-password', { email, newPassword })
+}

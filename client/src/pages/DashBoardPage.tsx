@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useAuth } from '@hooks/useAuth'
 import { useTransactions } from '@hooks/useTransactions'
 import { AddTransaction } from '@sections/AddTransaction/AddTransaction'
@@ -15,7 +16,7 @@ export function DashboardPage() {
 	return (
 		<div className='min-h-screen bg-gray-900 text-white'>
 			<div className='border-b border-gray-800 px-6 py-4 flex justify-between items-center'>
-				<h1 className='text-xl font-bold text-cyan-500'>Expense Tracker</h1>
+				<h1 className='text-xl font-bold text-cyan-500'>Spendly</h1>
 				<div className='flex items-center gap-4'>
 					<span className='text-gray-400 text-sm'>Hi, {user?.name}</span>
 					<button
@@ -34,8 +35,16 @@ export function DashboardPage() {
 					</div>
 					<div className='md:col-span-2 flex flex-col gap-8'>
 						<Dashboard transactions={transactions} />
+						<div className='flex justify-end'>
+							<Link
+								to='/transactions'
+								className='text-cyan-500 hover:text-cyan-400 text-sm font-medium'
+							>
+								View all transactions →
+							</Link>
+						</div>
 						<TransactionList
-							transactions={transactions}
+							transactions={transactions.slice(0, 3)}
 							onDelete={deleteTransaction}
 						/>
 					</div>
