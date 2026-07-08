@@ -62,19 +62,11 @@ export function LoginPage() {
 						Sign In
 					</Button>
 				</form>
-				<div className='flex justify-between items-center mt-4'>
+				<div className='flex justify-center items-center mt-4'>
 					<p className='text-gray-400 text-sm mt-4 text-center'>
 						No account?{' '}
 						<Link to='/register' className='text-cyan-500 hover:underline'>
 							Register
-						</Link>
-					</p>
-					<p className='text-gray-400 text-sm mt-2 text-center'>
-						<Link
-							to='/reset-password'
-							className='text-cyan-500 hover:underline'
-						>
-							Forgot password?
 						</Link>
 					</p>
 				</div>

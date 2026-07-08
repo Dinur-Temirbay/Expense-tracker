@@ -84,39 +84,6 @@ export const login = async (req: Request, res: Response) => {
 	}
 }
 
-export const resetPassword = async (req: Request, res: Response) => {
-	try {
-		const { email, newPassword } = req.body
-
-		if (!email || !newPassword) {
-			res.status(400).json({ message: 'Email and new password are required' })
-			return
-		}
-
-		if (newPassword.length < 8) {
-			res
-				.status(400)
-				.json({ message: 'Password must be at least 8 characters' })
-			return
-		}
-
-		const user = await User.findOne({ email })
-		if (!user) {
-			res.status(404).json({ message: 'User not found' })
-			return
-		}
-
-		const hashedPassword = await bcrypt.hash(newPassword, 10)
-		user.password = hashedPassword
-		await user.save()
-
-		res.json({ message: 'Password updated successfully' })
-	} catch (err) {
-		console.error('resetPassword error:', err)
-		res.status(500).json({ message: 'Server error' })
-	}
-}
-
 export const getMe = async (req: AuthRequest, res: Response) => {
 	try {
 		const user = await User.findById(req.userId).select('-password')

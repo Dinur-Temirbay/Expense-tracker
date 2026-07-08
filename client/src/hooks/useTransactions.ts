@@ -11,36 +11,38 @@ export function useTransactions() {
 
 	useEffect(() => {
 		if (!user) {
+			setTransactions([])
+			setError('')
+			setLoading(false)
 			return
 		}
 
-		let isOutdated = false
+		let isCancelled = false
 
-		const load = async () => {
+		const loadTransactions = async () => {
 			setLoading(true)
 			setError('')
 
 			try {
 				const response = await transactionsApi.getTransactions()
-				if (!isOutdated) setTransactions(response.data)
+				if (!isCancelled) setTransactions(response.data)
 			} catch (err: any) {
-				if (!isOutdated)
+				if (!isCancelled) {
 					setError(err.response?.data?.message || 'Failed to load transactions')
+				}
 			} finally {
-				if (!isOutdated) setLoading(false)
+				if (!isCancelled) {
+					setLoading(false)
+				}
 			}
 		}
 
-		load()
+		loadTransactions()
 
 		return () => {
-			isOutdated = true
+			isCancelled = true
 		}
-	}, [user?.id])
-
-	const visibleTransactions = user ? transactions : []
-	const visibleLoading = user ? loading : false
-	const visibleError = user ? error : ''
+	}, [user])
 
 	const addTransaction = async (form: TransactionForm) => {
 		try {
@@ -61,9 +63,9 @@ export function useTransactions() {
 	}
 
 	return {
-		transactions: visibleTransactions,
-		loading: visibleLoading,
-		error: visibleError,
+		transactions,
+		loading,
+		error,
 		addTransaction,
 		deleteTransaction,
 	}

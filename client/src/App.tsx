@@ -3,7 +3,6 @@ import { useAuth } from '@hooks/useAuth.ts'
 import { LoginPage } from '@pages/LoginPage.tsx'
 import { RegisterPage } from '@pages/RegisterPage.tsx'
 import { DashboardPage } from '@pages/DashBoardPage'
-import { ResetPasswordPage } from '@pages/ResetPasswordPage'
 import { TransactionsPage } from '@pages/TransactionsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -43,14 +42,6 @@ export function App() {
 					element={
 						<PublicRoute>
 							<RegisterPage />
-						</PublicRoute>
-					}
-				/>
-				<Route
-					path='/reset-password'
-					element={
-						<PublicRoute>
-							<ResetPasswordPage />
 						</PublicRoute>
 					}
 				/>
