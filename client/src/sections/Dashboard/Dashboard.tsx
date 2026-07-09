@@ -131,18 +131,18 @@ export function Dashboard({ transactions }: Props) {
 			<div className='grid grid-cols-3 gap-4'>
 				<div className='bg-gray-800 rounded-xl p-4'>
 					<p className='text-gray-400 text-sm mb-1'>Income</p>
-					<p className='text-green-500 text-2xl font-bold'>+{income} KZT</p>
+					<p className='text-green-500 text-2xl font-bold'>+${income}</p>
 				</div>
 				<div className='bg-gray-800 rounded-xl p-4'>
 					<p className='text-gray-400 text-sm mb-1'>Expense</p>
-					<p className='text-red-500 text-2xl font-bold'>-{expense} KZT</p>
+					<p className='text-red-500 text-2xl font-bold'>-${expense}</p>
 				</div>
 				<div className='bg-gray-800 rounded-xl p-4'>
 					<p className='text-gray-400 text-sm mb-1'>Balance</p>
 					<p
 						className={`text-2xl font-bold ${income - expense >= 0 ? 'text-white' : 'text-red-500'}`}
 					>
-						{income - expense} KZT
+						${income - expense}
 					</p>
 				</div>
 			</div>
