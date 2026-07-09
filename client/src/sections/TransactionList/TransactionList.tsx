@@ -54,7 +54,8 @@ export function TransactionList({ transactions, onDelete }: Props) {
 						<span
 							className={`font-bold text-lg ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}`}
 						>
-							{t.type === 'income' ? '+' : '-'}${t.amount}
+							{t.type === 'income' ? '+' : '-'}
+							{t.amount} KZT
 						</span>
 						<Button variant='ghost' size='sm' onClick={() => onDelete(t._id)}>
 							✕
