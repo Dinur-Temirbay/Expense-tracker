@@ -1,5 +1,6 @@
 import type { Transaction } from '../../types'
 import { Button } from '@components/ui/Button'
+import { formatAmount } from '../../utils/format'
 
 interface Props {
 	transactions: Transaction[]
@@ -54,7 +55,8 @@ export function TransactionList({ transactions, onDelete }: Props) {
 						<span
 							className={`font-bold text-lg ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}`}
 						>
-							{t.type === 'income' ? '+' : '-'}${t.amount}
+							{t.type === 'income' ? '+' : '-'}
+							{formatAmount(t.amount)} KZT
 						</span>
 						<Button variant='ghost' size='sm' onClick={() => onDelete(t._id)}>
 							✕
