@@ -15,50 +15,18 @@ export function TransactionsPage() {
 	const [endDate, setEndDate] = useState('')
 
 	const categories = useMemo(() => {
-		const predefined = [
-			'Food',
-			'Transport',
-			'Entertainment',
-			'Shopping',
-			'Health',
-		]
-		const uniqueCategories = Array.from(
-			new Set(transactions.map(transaction => transaction.category.trim())),
-		).filter(Boolean)
-
-		const standard = uniqueCategories.filter(category =>
-			predefined.includes(category),
-		)
-		const custom = uniqueCategories.filter(
-			category => !predefined.includes(category),
-		)
-
-		return [
-			...standard.sort((a, b) => a.localeCompare(b)),
-			...(custom.length ? ['Other'] : []),
-		]
+		return Array.from(new Set(transactions.map(t => t.category.trim())))
+			.filter(Boolean)
+			.sort()
 	}, [transactions])
 
 	const filteredTransactions = useMemo(() => {
-		return transactions.filter(transaction => {
-			const matchesType =
-				typeFilter === 'all' || transaction.type === typeFilter
-			const normalizedCategory = [
-				'Food',
-				'Transport',
-				'Entertainment',
-				'Shopping',
-				'Health',
-			].includes(transaction.category.trim())
-				? transaction.category.trim()
-				: 'Other'
+		return transactions.filter(t => {
+			const matchesType = typeFilter === 'all' || t.type === typeFilter
 			const matchesCategory =
-				categoryFilter === 'all' || normalizedCategory === categoryFilter
-
-			const transactionDate = transaction.date
-			const matchesStartDate = !startDate || transactionDate >= startDate
-			const matchesEndDate = !endDate || transactionDate <= endDate
-
+				categoryFilter === 'all' || t.category.trim() === categoryFilter
+			const matchesStartDate = !startDate || t.date >= startDate
+			const matchesEndDate = !endDate || t.date <= endDate
 			return (
 				matchesType && matchesCategory && matchesStartDate && matchesEndDate
 			)

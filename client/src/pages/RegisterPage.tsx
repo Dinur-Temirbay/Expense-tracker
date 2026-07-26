@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import { useAuth } from '@hooks/useAuth.ts'
-import { register as registerApi } from '../api/auth.ts'
+import { useAuth } from '@hooks/useAuth'
+import { register as registerApi } from '../api/auth'
 import { Link } from 'react-router-dom'
-import { Button } from '@components/ui/Button.tsx'
-import { Input } from '@components/ui/Input.tsx'
-
-const passwordRegex =
-	/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+import { Button } from '@components/ui/Button'
+import { Input } from '@components/ui/Input'
+import { validateRegisterForm } from '@utils/validation'
 
 export function RegisterPage() {
 	const { login } = useAuth()
@@ -26,36 +24,15 @@ export function RegisterPage() {
 	const [loading, setLoading] = useState(false)
 	const [serverError, setServerError] = useState('')
 
-	const validate = () => {
-		const newErrors = { name: '', email: '', password: '' }
-
-		if (!form.name.trim()) {
-			newErrors.name = 'Name is required'
-		}
-
-		if (!form.email.trim()) {
-			newErrors.email = 'Email is required'
-		} else if (!form.email.includes('@')) {
-			newErrors.email = 'Enter a valid email'
-		}
-
-		if (!form.password) {
-			newErrors.password = 'Password is required'
-		} else if (!passwordRegex.test(form.password)) {
-			newErrors.password =
-				'Min 8 characters, uppercase, lowercase, number or special character'
-		}
-
-		setErrors(newErrors)
-
-		return !newErrors.name && !newErrors.email && !newErrors.password
-	}
-
 	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setServerError('')
 
-		if (!validate()) return
+		const newErrors = validateRegisterForm(form)
+		setErrors(newErrors)
+
+		const isValid = !newErrors.name && !newErrors.email && !newErrors.password
+		if (!isValid) return
 
 		setLoading(true)
 		try {

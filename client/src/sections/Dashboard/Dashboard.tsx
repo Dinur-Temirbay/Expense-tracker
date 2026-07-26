@@ -10,6 +10,7 @@ import {
 import { Pie, Bar } from 'react-chartjs-2'
 import type { Transaction } from '../../types/index'
 import { formatAmount } from '../../utils/format'
+import { useMemo } from 'react'
 
 ChartJS.register(
 	ArcElement,
@@ -34,44 +35,58 @@ interface Props {
 }
 
 export function Dashboard({ transactions }: Props) {
-	const income = transactions
-		.filter(t => t.type === 'income')
-		.reduce((sum, t) => sum + t.amount, 0)
-
-	const expense = transactions
-		.filter(t => t.type === 'expense')
-		.reduce((sum, t) => sum + t.amount, 0)
-
-	const categoryData = transactions.reduce(
-		(acc, t) => {
-			const existing = acc.find(item => item.name === t.category)
-			if (existing) {
-				existing.value += t.amount
-			} else {
-				acc.push({ name: t.category, value: t.amount })
-			}
-			return acc
-		},
-		[] as { name: string; value: number }[],
+	const income = useMemo(
+		() =>
+			transactions
+				.filter(t => t.type === 'income')
+				.reduce((sum, t) => sum + t.amount, 0),
+		[transactions],
+	)
+	const expense = useMemo(
+		() =>
+			transactions
+				.filter(t => t.type === 'expense')
+				.reduce((sum, t) => sum + t.amount, 0),
+		[transactions],
+	)
+	const categoryData = useMemo(
+		() =>
+			transactions.reduce(
+				(acc, t) => {
+					const existing = acc.find(item => item.name === t.category)
+					if (existing) {
+						existing.value += t.amount
+					} else {
+						acc.push({ name: t.category, value: t.amount })
+					}
+					return acc
+				},
+				[] as { name: string; value: number }[],
+			),
+		[transactions],
 	)
 
-	const monthData = transactions.reduce(
-		(acc, t) => {
-			const month = t.date.slice(0, 7)
-			const existing = acc.find(item => item.month === month)
-			if (existing) {
-				if (t.type === 'income') existing.income += t.amount
-				else existing.expense += t.amount
-			} else {
-				acc.push({
-					month,
-					income: t.type === 'income' ? t.amount : 0,
-					expense: t.type === 'expense' ? t.amount : 0,
-				})
-			}
-			return acc
-		},
-		[] as { month: string; income: number; expense: number }[],
+	const monthData = useMemo(
+		() =>
+			transactions.reduce(
+				(acc, t) => {
+					const month = t.date.slice(0, 7)
+					const existing = acc.find(item => item.month === month)
+					if (existing) {
+						if (t.type === 'income') existing.income += t.amount
+						else existing.expense += t.amount
+					} else {
+						acc.push({
+							month,
+							income: t.type === 'income' ? t.amount : 0,
+							expense: t.type === 'expense' ? t.amount : 0,
+						})
+					}
+					return acc
+				},
+				[] as { month: string; income: number; expense: number }[],
+			),
+		[transactions],
 	)
 
 	const pieData = {
